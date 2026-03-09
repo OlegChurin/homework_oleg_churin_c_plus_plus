@@ -1,0 +1,81 @@
+
+#include <cassert>
+#include <sstream>
+#include <string>
+#include <iostream>
+
+using namespace std::literals;
+
+#include "08.13.hpp"
+
+int main()
+{
+    Integer x = std::string(32, '1');   // "+111...111"
+    Integer y = std::string(32, '2');   // "+222...222"
+
+
+    assert((x += y) == "+33333333333333333333333333333333"s);
+    assert((x -= y) == "+11111111111111111111111111111111"s);
+    assert((x *= y) == "+246913580246913580246913580246908641975308641975308641975308642"s);
+    assert((x /= y) == "+11111111111111111111111111111111"s);
+
+    assert((x++) == "+11111111111111111111111111111111"s);
+    assert((x--) == "+11111111111111111111111111111112"s);
+    assert((++y) == "+22222222222222222222222222222223"s);
+    assert((--y) == "+22222222222222222222222222222222"s);
+
+    assert((x + y) == "+33333333333333333333333333333333"s);
+    assert((x - y) == "-11111111111111111111111111111111"s);
+    assert((x * y) == "+246913580246913580246913580246908641975308641975308641975308642"s);
+    assert((x / y) == "+0"s);
+
+    assert((x < y) == 1);
+    assert((x > y) == 0);
+    assert((x <= y) == 1);
+    assert((x >= y) == 0);
+    assert((x == y) == 0);
+    assert((x != y) == 1);
+
+    std::stringstream stream_1(std::string(32, '1'));
+    std::stringstream stream_2;
+    stream_1 >> x;
+    stream_2 << x;
+    assert(stream_2.str() == stream_1.str());
+
+    assert(sqrt(multiply(x, x)) == x);  
+
+  
+    Integer a = 17;
+    Integer b = 5;
+    assert((a % b) == 2);
+    a = -17;
+    assert((a % b) == 3);  
+    a = 17;
+    b = -5;
+    assert((a % b) == 2);  
+    a = -17;
+    b = -5;
+    assert((a % b) == 3);
+
+    // Тест pow
+    Integer base = 2;
+    assert(pow(base, 0) == 1);
+    assert(pow(base, 1) == 2);
+    assert(pow(base, 5) == 32);
+    base = -3;
+    assert(pow(base, 2) == 9);
+    assert(pow(base, 3) == -27);
+
+    // Тест sign и abs
+    Integer n1 = 0;
+    assert(n1.sign() == 0);
+    Integer n2 = 42;
+    assert(n2.sign() == 1);
+    Integer n3 = -42;
+    assert(n3.sign() == -1);
+    assert(n3.abs() == 42);
+    assert(n3.abs().sign() == 1);
+
+    std::cout << "All tests passed!\n";
+    return 0;
+}
